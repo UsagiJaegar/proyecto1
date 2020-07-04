@@ -1,5 +1,6 @@
 VERSION 5.00
 Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSADODC.OCX"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Begin VB.Form Form2 
    Caption         =   "Form2"
    ClientHeight    =   6150
@@ -11,6 +12,21 @@ Begin VB.Form Form2
    ScaleWidth      =   8445
    StartUpPosition =   3  'Windows Default
    Visible         =   0   'False
+   Begin VB.CommandButton Command7 
+      Caption         =   "Foto"
+      Height          =   375
+      Left            =   6480
+      TabIndex        =   26
+      Top             =   4920
+      Width           =   735
+   End
+   Begin MSComDlg.CommonDialog CommonDialog1 
+      Left            =   5400
+      Top             =   5400
+      _ExtentX        =   847
+      _ExtentY        =   847
+      _Version        =   393216
+   End
    Begin VB.CommandButton Command6 
       Caption         =   "modificar"
       Height          =   375
@@ -45,8 +61,9 @@ Begin VB.Form Form2
    End
    Begin MSAdodcLib.Adodc Adodc2 
       Height          =   375
-      Left            =   5880
-      Top             =   4800
+      Left            =   240
+      Top             =   5520
+      Visible         =   0   'False
       Width           =   2295
       _ExtentX        =   4048
       _ExtentY        =   661
@@ -69,8 +86,8 @@ Begin VB.Form Form2
       ForeColor       =   -2147483640
       Orientation     =   0
       Enabled         =   -1
-      Connect         =   "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\user\Desktop\acces\zoologico.mdb;Persist Security Info=False"
-      OLEDBString     =   "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\user\Desktop\acces\zoologico.mdb;Persist Security Info=False"
+      Connect         =   "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\user\Desktop\proyecto1\zoologico.mdb;Persist Security Info=False"
+      OLEDBString     =   "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\user\Desktop\proyecto1\zoologico.mdb;Persist Security Info=False"
       OLEDBFile       =   ""
       DataSourceName  =   ""
       OtherAttributes =   ""
@@ -434,10 +451,12 @@ Private Sub Command2_Click()
 End Sub
 
 Private Sub Command3_Click()
+    FileCopy CommonDialog1.FileName, App.Path & "\\" & CommonDialog1.FileTitle
     Adodc2.Recordset.Update
     Adodc2.Recordset.MoveFirst
     x = App.Path
     Image2.Picture = LoadPicture(x & "\" & Label11.Caption)
+    
     Text1.Enabled = False
     Text2.Enabled = False
     Text3.Enabled = False
@@ -452,11 +471,13 @@ Private Sub Command3_Click()
     Command4.Enabled = True
     Command5.Enabled = True
     Command6.Enabled = True
+    Command7.Enabled = False
     
 End Sub
 
 Private Sub Command4_Click()
     Adodc2.Recordset.AddNew
+    
     Text1.Enabled = True
     Text2.Enabled = True
     Text3.Enabled = True
@@ -471,14 +492,20 @@ Private Sub Command4_Click()
     Command4.Enabled = False
     Command5.Enabled = False
     Command6.Enabled = False
+    Command7.Enabled = True
+    
     Text1.SetFocus
+    
+    Label11.Caption = ""
+    Image2.Picture = LoadPicture(Label11.Caption)
+    
 End Sub
 
 Private Sub Command5_Click()
     Adodc2.Recordset.Delete
     Adodc2.Recordset.MoveFirst
-    '''x = App.Path
-    '''Image2.Picture = LoadPicture(x & "\" & Label11.Caption)
+    x = App.Path
+    Image2.Picture = LoadPicture(x & "\" & Label11.Caption)
 End Sub
 
 Private Sub Command6_Click()
@@ -498,6 +525,18 @@ Private Sub Command6_Click()
     Command6.Enabled = False
 End Sub
 
+Private Sub Command7_Click()
+    CommonDialog1.ShowOpen
+    Image2.Picture = LoadPicture(CommonDialog1.FileName)
+    Label11.Caption = CommonDialog1.FileTitle
+    
+    If Label11.Caption = "" Then
+        MsgBox ("seleccione una imagen")
+    Else
+         Label11.Caption = CommonDialog1.FileTitle
+    End If
+End Sub
+
 Private Sub Form_Load()
     x = App.Path
     Image2.Picture = LoadPicture(x & "\" & Label11.Caption)
@@ -514,8 +553,9 @@ Private Sub Form_Load()
     Command2.Enabled = True
     Command3.Enabled = False
     Command4.Enabled = True
-    Command5.Enabled = False
-    Command6.Enabled = False
+    Command5.Enabled = True
+    Command6.Enabled = True
+    Command7.Enabled = False
     
     
 
