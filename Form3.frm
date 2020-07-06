@@ -307,8 +307,6 @@ Private Sub Form_Load()
     Text4.Enabled = False
     Text5.Enabled = False
     Text6.Enabled = False
-    Text7.Enabled = False
-    Text8.Enabled = False
     Command1.Enabled = True
     Command2.Enabled = True
     Command3.Enabled = False
