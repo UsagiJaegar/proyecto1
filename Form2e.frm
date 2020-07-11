@@ -452,10 +452,11 @@ End Sub
 
 Private Sub Command3_Click()
     FileCopy CommonDialog1.FileName, App.Path & "\\" & CommonDialog1.FileTitle
-    Adodc2.Recordset.Update
+     Adodc2.Recordset.Update
     Adodc2.Recordset.MoveFirst
     x = App.Path
     Image2.Picture = LoadPicture(x & "\" & Label11.Caption)
+
     
     Text1.Enabled = False
     Text2.Enabled = False
